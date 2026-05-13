@@ -285,6 +285,7 @@ app.post('/api/announcements/:id/dismiss', auth, async (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-  console.log(`🚀 Focus API is running smoothly on http://localhost:${PORT}`);
-});
+module.exports = app;
+// app.listen(PORT, () => {
+//   console.log(`🚀 Focus API is running smoothly on http://localhost:${PORT}`);
+// });
