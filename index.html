@@ -397,8 +397,8 @@ textarea.inp{resize:vertical;line-height:1.55}
 .ch-s{font-size:11.5px;color:var(--txt3);margin-bottom:1rem}
 .ch-w{width:100%;overflow:hidden;border-radius:6px}.ch-w svg{width:100%;display:block}
 .ch-2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
-.act-list{background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;box-shadow:var(--sh)}
-.act-hdr{padding:9px 14px;background:var(--s2);border-bottom:1px solid var(--bdr);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}
+/*.act-list{background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;box-shadow:var(--sh)}*/
+/*.act-hdr{padding:9px 14px;background:var(--s2);border-bottom:1px solid var(--bdr);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}*/
 .act-row{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid var(--bdr);font-size:13px}
 .act-row:last-child{border-bottom:none}
 .act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
@@ -1299,7 +1299,7 @@ textarea.inp{resize:vertical;line-height:1.55}
         <div class="card ch-card" style="margin-bottom:1.1rem"><div class="ch-t">30-day session heatmap</div><div class="ch-s">Pomodoro sessions over 30 days</div><div class="ch-w" id="ch-mo-sess"></div></div>
         <div class="card ch-card"><div class="ch-t">Habit consistency — 30 days</div><div class="ch-s">Daily completion grid</div><div class="ch-w" id="ch-mo-hab"></div></div>
       </div>
-      <div style="margin-top:1.25rem"><div class="sec-t">Recent Activity</div><div class="act-list"><div class="act-hdr">Activity log</div><div id="act-log"></div></div></div>
+      <!--<div style="margin-top:1.25rem"><div class="sec-t">Recent Activity</div><div class="act-list"><div class="act-hdr">Activity log</div><div id="act-log"></div></div></div>-->
     </section>
 
     <!-- PROFILE -->
@@ -3508,7 +3508,7 @@ if(loadSess())bootApp();else showLanding();
       $('ch-wk-hab').innerHTML   = habits.length ? svgBars(habits.map(h=>streak(h)), habits.map(h=>h.name.slice(0,5)), habits.map(h=>h.color)) : svgBars([],[],[C.amber]);
     } else if (tab === 'month') {
       $('ch-mo-sess').innerHTML = svgHeat30(pomD);
-      $('ch-mo-hab').innerHTML  = svgHabMonth(habits);
+      $('ch-mo-hab').innerHTML  = svgHabMonth(habits)act-hdr;
     }
   }
  
@@ -3526,11 +3526,11 @@ if(loadSess())bootApp();else showLanding();
     if (kg) kg.innerHTML = kpis.map((k,i) => '<div class="card kpi" style="animation:pgIn .2s '+(i*.05)+'s backwards"><div class="kpi-n">'+esc(String(k.n))+'</div><div class="kpi-l">'+esc(k.l)+'</div></div>').join('');
     const act = document.querySelector('.cht-btn.on');
     renderCharts(act ? act.dataset.ch : 'day');
-    const al = $('act-log');
+    <!-- const al = $('act-log');
     if (al) al.innerHTML = _actCache.slice(0,12).length
       ? _actCache.slice(0,12).map(a => '<div class="act-row"><div class="act-dot" style="background:'+( ACT_C[a.type]||'var(--txt3)')+'"></div><div style="flex:1;font-size:13px">'+esc(a.msg)+'</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:10.5px;color:var(--txt3)">'+esc(a.time)+'</div></div>').join('')
       : '<div class="empty" style="padding:2rem"><div class="empty-ico">📊</div><div class="empty-t">No activity yet</div></div>';
-  }
+  } -->
  
   /* ─────────────────────────────────────────────────────────────────────────
      PROFILE
