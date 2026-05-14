@@ -1299,7 +1299,7 @@ card.style.setProperty('--py', '0px');
 <div class="card ch-card" style="margin-bottom:1.1rem"><div class="ch-t">30-day session heatmap</div><div class="ch-s">Pomodoro sessions over 30 days</div><div class="ch-w" id="ch-mo-sess"></div></div>
 <div class="card ch-card"><div class="ch-t">Habit consistency — 30 days</div><div class="ch-s">Daily completion grid</div><div class="ch-w" id="ch-mo-hab"></div></div>
 </div>
-<div style="margin-top:1.25rem"><div class="sec-t">Recent Activity</div><div class="act-list"><div class="act-hdr">Activity log</div><div id="act-log"></div></div></div>
+<!-- <div style="margin-top:1.25rem"><div class="sec-t">Recent Activity</div><div class="act-list"><div class="act-hdr">Activity log</div><div id="act-log"></div></div></div> -->
 </section>
 
 <!-- PROFILE -->
@@ -3407,14 +3407,16 @@ function quickBlk(h) { $('blk-s').value = m2t(h*60); $('blk-e').value = m2t((h+1
     ACTIVITY LOG (fire-and-forget; cached locally for charts)
  ───────────────────────────────────────────────────────────────────────── */
 const ACT_C = { pom:'var(--amber)', todo:'var(--blue)', habit:'var(--green)', plan:'var(--purple)' };
-let _actCache = [];
+// let _actCache = [];
 
-function addAct(type, msg) {
-const entry = { type, msg, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), date: TODAY };
-_actCache.unshift(entry);
-if (_actCache.length > 60) _actCache.pop();
-api.post('/activity', { type, msg }).catch(() => {});
-}
+// function addAct(type, msg) {
+// const entry = { type, msg, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), date: TODAY };
+// _actCache.unshift(entry);
+// if (_actCache.length > 60) _actCache.pop();
+// api.post('/activity', { type, msg }).catch(() => {});
+// }
+
+ let _actCache = []; function addAct(type, msg) { return; }
 
 /* ─────────────────────────────────────────────────────────────────────────
     CHARTS & STATS
