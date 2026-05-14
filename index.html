@@ -12,7 +12,7 @@
   --amber-dim:rgba(240,165,0,.12);--amber-glow:rgba(240,165,0,.26);
   --green:#52b788;--red:#e05252;--blue:#5b8dee;--purple:#9b8ecf;
 }
-[data-theme="dark"]{act-list
+[data-theme="dark"]{
   --bg:#0c0c0f;--surface:#16161e;--s2:#1e1e28;--s3:#252530;
   --bdr:#2a2a38;--bdr2:#363648;
   --txt:#e8e4d9;--txt2:#9e9a90;--txt3:#56535e;
@@ -245,7 +245,7 @@ textarea.inp{resize:vertical;line-height:1.55}
 .empty{text-align:center;padding:3rem 2rem;color:var(--txt3)}
 .empty-ico{font-size:32px;margin-bottom:.6rem}
 .empty-t{font-size:14px;font-weight:700;color:var(--txt2);margin-bottom:3px}
-.sec-t{font-size:12px;font-weight:700;text-transform:uppercase;letter-smargin-top:1.25rempacing:.07em;color:var(--txt2);margin-bottom:.85rem}
+.sec-t{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);margin-bottom:.85rem}
 .divd{height:1px;background:var(--bdr);margin:1rem 0}
 @keyframes slideIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
 
@@ -402,7 +402,7 @@ textarea.inp{resize:vertical;line-height:1.55}
 .act-row{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid var(--bdr);font-size:13px}
 .act-row:last-child{border-bottom:none}
 .act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-act-list
+
 /* ═══════════════════ PROFILE ═══════════════════ */
 .p-hero{display:flex;align-items:center;gap:1.25rem;padding:1.4rem;margin-bottom:1.1rem;flex-wrap:wrap}
 .p-av{
@@ -796,7 +796,7 @@ act-list
   .a-grid-2{grid-template-columns:1fr}
   .tbl-wrap{font-size:12px}
   .u-tbl th:nth-child(5),.u-tbl td:nth-child(5){display:none}
-}margin-top:1.25rem
+}
 
 /* ── 480px: small mobile ── */
 @media (max-width:480px){
@@ -817,7 +817,7 @@ act-list
 
 /* ── 360px: very small ── */
 @media (max-width:360px){
-  .page{padding:1rem .75rem 1.5rem}margin-top:1.25rem
+  .page{padding:1rem .75rem 1.5rem}
   .pom-ring{width:150px;height:150px}
   .pom-dig{font-size:30px}
   .pom-slbl{font-size:9px}
@@ -1314,11 +1314,7 @@ act-list
         <div class="card p-sec">
           <div class="p-sec-t">Edit profile</div>
           <div class="f-row" style="margin-bottom:.8rem"><label class="f-lbl">Display name</label><input class="f-inp" id="edit-name" placeholder="Your name"></div>
-          <div class="f-row" style="margin-bottom:.8rem"><label class="f-lbl">Email (read only)</label><input class="f-inp" id="edit-email" disabled style="opacity:.4"></div>  //   const al = $('act-log');
-  //   if (al) al.innerHTML = _actCache.slice(0,12).length
-  //     ? _actCache.slice(0,12).map(a => '<div class="act-row"><div class="act-dot" style="background:'+( ACT_C[a.type]||'var(--txt3)')+'"></div><div style="flex:1;font-size:13px">'+esc(a.msg)+'</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:10.5px;color:var(--txt3)">'+esc(a.time)+'</div></div>').join('')
-  //     : '<div class="empty" style="padding:2rem"><div class="empty-ico">📊</div><div class="empty-t">No activity yet</div></div>';
-  // }
+          <div class="f-row" style="margin-bottom:.8rem"><label class="f-lbl">Email (read only)</label><input class="f-inp" id="edit-email" disabled style="opacity:.4"></div>
           <button class="btn btn-a btn-sm" onclick="saveProfile()">Save changes</button>
         </div>
         <div class="card p-sec">
@@ -3512,7 +3508,7 @@ if(loadSess())bootApp();else showLanding();
       $('ch-wk-hab').innerHTML   = habits.length ? svgBars(habits.map(h=>streak(h)), habits.map(h=>h.name.slice(0,5)), habits.map(h=>h.color)) : svgBars([],[],[C.amber]);
     } else if (tab === 'month') {
       $('ch-mo-sess').innerHTML = svgHeat30(pomD);
-      $('ch-mo-hab').innerHTML  = svgHabMonth(habits)act-hdr;
+      $('ch-mo-hab').innerHTML  = svgHabMonth(habits);
     }
   }
  
@@ -3535,7 +3531,6 @@ if(loadSess())bootApp();else showLanding();
       ? _actCache.slice(0,12).map(a => '<div class="act-row"><div class="act-dot" style="background:'+( ACT_C[a.type]||'var(--txt3)')+'"></div><div style="flex:1;font-size:13px">'+esc(a.msg)+'</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:10.5px;color:var(--txt3)">'+esc(a.time)+'</div></div>').join('')
       : '<div class="empty" style="padding:2rem"><div class="empty-ico">📊</div><div class="empty-t">No activity yet</div></div>';
   }
-    
  
   /* ─────────────────────────────────────────────────────────────────────────
      PROFILE
