@@ -5,6 +5,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 
+
+//news
+const { OAuth2Client } = require('google-auth-library');
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+//end news
+
 const app = express();
 const PORT = 3001; // The frontend expects http://localhost:3001/api
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key-change-me-later';
@@ -74,6 +81,54 @@ app.post('/api/auth/login', async (req, res) => {
 //     res.status(500).json({ error: 'Server error' });
 //   }
 });
+
+
+//news 
+
+app.post('/api/auth/google', async (req, res) => {
+  const { token } = req.body;
+  
+  try {
+    // 1. كنتأكدو من جوجل بلي التوكين صحيح
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    
+    const payload = ticket.getPayload();
+    const email = payload.email.toLowerCase();
+    const name = payload.name;
+    
+    // 2. كنقلبو واش هاد الإيميل كاين عندنا فالداتابيز (Login)
+    const { rows } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
+    let user = rows[0];
+    
+    // 3. يلا مالقيناهش، كنصاوبو ليه حساب جديد فالبلاصة (Sign up)
+    if (!user) {
+      // كنعطيو باسورد عشوائي حيت غيبقى يدخل غير بجوجل
+      const hash = await bcrypt.hash('google_oauth_placeholder_password', 10);
+      const insertRes = await pool.query(
+        `INSERT INTO users (email, password_hash, full_name, role) 
+         VALUES ($1, $2, $3, 'member') RETURNING *`,
+        [email, hash, name]
+      );
+      user = insertRes.rows[0];
+    }
+    
+    // 4. كنصاوبو التوكين ديالنا وندخلوه
+    const appToken = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET);
+    res.json({ 
+      token: appToken, 
+      user: { id: user.id, name: user.full_name, email: user.email, role: user.role, avColor: user.avatar_color, created: user.created_at } 
+    });
+    
+  } catch (error) {
+    console.error("🔴 GOOGLE AUTH ERROR:", error);
+    res.status(401).json({ error: 'Google login failed' });
+  }
+});
+
+// end news  
 
 app.get('/api/auth/me', auth, async (req, res) => {
   const { rows } = await pool.query(`SELECT * FROM users WHERE id = $1`, [req.user.id]);
@@ -286,6 +341,8 @@ app.post('/api/announcements/:id/dismiss', auth, async (req, res) => {
 
 
 module.exports = app;
-// app.listen(PORT, () => {
-//   console.log(`🚀 Focus API is running smoothly on http://localhost:${PORT}`);
-// });
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Focus API is running smoothly on http://localhost:${PORT}`);
+  });
+}
