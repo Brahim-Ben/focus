@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Focus — Productivity Suite</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+ <style>
 /* ═══════════════════ THEME ═══════════════════ */
 :root{
 --amber:#f0a500;--amber-d:#d49000;
@@ -1115,6 +1116,24 @@ card.style.setProperty('--py', '0px');
 <div class="rem-row"><input type="checkbox" id="remember-me"><label for="remember-me">Remember me</label></div>
 <div class="f-err" id="li-err" style="margin-top:8px"></div>
 <button class="a-btn" onclick="doLogin()" style="margin-top:1rem">Sign in</button>
+
+ <!-- new code  -->
+
+<div id="g_id_onload"
+     data-client_id="886606512500-stud52rp4fpsnpi66ga846918jt56cdv.apps.googleusercontent.com"
+     data-context="use"
+     data-ux_mode="popup"
+     data-callback="handleGoogleLogin"
+     data-auto_prompt="false">
+</div>
+
+<div class="g_id_signin" data-type="standard" 
+    data-shape="rectangular" data-theme="outline" data-text="continue_with" 
+    data-size="large" data-logo_alignment="center" style="margin-top:1.5rem; 
+    width:100%; display:flex; justify-content:center;"></div>
+
+ <!-- end new code  -->
+ 
 <div class="a-foot">No account? <button class="a-link" onclick="showAuth('signup')">Sign up free</button></div>
 <div class="a-foot" style="margin-top:.4rem"><button class="a-link" onclick="showLanding()">← Back</button></div>
 </div>
@@ -1127,6 +1146,24 @@ card.style.setProperty('--py', '0px');
 <div class="f-row"><label class="f-lbl">Password</label><div class="pw-w"><input class="f-inp" type="password" id="su-pw" placeholder="Min. 6 characters" oninput="chkStrength(this.value)" onkeydown="if(event.key==='Enter')doSignup()"><button class="pw-tog" onclick="togPw('su-pw',this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="str-bar"><div class="str-fill" id="pw-str"></div></div><div class="f-err" id="su-pw-e"></div></div>
 <div class="f-err" id="su-err" style="margin-top:7px"></div>
 <button class="a-btn" onclick="doSignup()" style="margin-top:.9rem">Create account</button>
+
+ <!-- new code  -->
+
+<div id="g_id_onload"
+     data-client_id="886606512500-stud52rp4fpsnpi66ga846918jt56cdv.apps.googleusercontent.com"
+     data-context="use"
+     data-ux_mode="popup"
+     data-callback="handleGoogleLogin"
+     data-auto_prompt="false">
+</div>
+
+<div class="g_id_signin" data-type="standard" 
+    data-shape="rectangular" data-theme="outline" data-text="continue_with" 
+    data-size="large" data-logo_alignment="center" style="margin-top:1.5rem; 
+    width:100%; display:flex; justify-content:center;"></div>
+
+ <!-- end new code  -->
+ 
 <div class="a-foot">Have an account? <button class="a-link" onclick="showAuth('login')">Log in</button></div>
 <div class="a-foot" style="margin-top:.4rem"><button class="a-link" onclick="showLanding()">← Back</button></div>
 </div>
@@ -3921,6 +3958,31 @@ else showLanding();
     WHITEBOARD ENGINE — unchanged from original
     (keep the existing whiteboard IIFE block verbatim after this closing tag)
  ══════════════════════════════════════════════════════════════════════════ */
+
+
+ //  new code
+
+async function handleGoogleLogin(response) {
+  const googleToken = response.credential;
+  
+  try {
+    // كنصيفطو التوكين للباكاند باستعمال دالة api اللي صاوبتي
+    const data = await api.post('/auth/google', { token: googleToken });
+
+    // يلا داز كلشي بيخير، كنسجلو الدخول فالمتصفح بالطريقة الصحيحة
+    Auth.setToken(data.token, true); // خزن التوكين
+    CU = data.user; // حدث معلومات المستخدم
+    
+    // هاد الدالة كافية باش تخبي الفورميلير وتخدم التطبيق
+    await bootApp(); 
+    toast('✅ Welcome using Google!', 'ok');
+    
+  } catch (err) {
+    console.error('Google Auth Error:', err);
+    showFE('li-err', err.message); // بين الخطأ فالفورميلير
+  }
+}
+// end the new code 
 </script>
 
 </body>
