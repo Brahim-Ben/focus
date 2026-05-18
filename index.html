@@ -2651,7 +2651,7 @@ if(loadSess())bootApp();else showLanding();
 'use strict';
 
 /* ── API CONFIGURATION ── */
-  //const API_BASE = 'http://localhost:3001/api'; // ← change to your backend URL
+  // const API_BASE = 'http://localhost:3001/api'; // ← change to your backend URL
   //const API_BASE = 'http://localhost:3001/api'; // ← change to your backend URL
   const API_BASE = '/api';
 const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -3838,15 +3838,36 @@ toast('Removed.', 'ok');
  ───────────────────────────────────────────────────────────────────────── */
 let wkOffset = 0;
 
+// new code
+
 function wkGetWeek(offset) {
-const now = new Date(), day = now.getDay(), diffToMon = day===0?-6:1-day;
-const mon = new Date(now); mon.setDate(now.getDate() + diffToMon + offset*7); mon.setHours(0,0,0,0);
-return Array.from({length:7},(_,i) => {
-const d = new Date(mon); d.setDate(mon.getDate() + i);
-const date = d.toISOString().split('T')[0];
-return { date, label:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i], dayName:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][i], isToday:date===TODAY, isPast:d<new Date(new Date().setHours(0,0,0,0)) };
-});
+  const now = new Date(), day = now.getDay(), diffToMon = day===0?-6:1-day;
+  const mon = new Date(now); mon.setDate(now.getDate() + diffToMon + offset*7); mon.setHours(0,0,0,0);
+  return Array.from({length:7},(_,i) => {
+    const d = new Date(mon); d.setDate(mon.getDate() + i);
+    // هاهو السطر اللي تصلح: غنستعملو التوقيت المحلي بلاصة toISOString
+    const date = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    return { 
+      date, 
+      label:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i], 
+      dayName:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][i], 
+      isToday:date===TODAY, 
+      isPast:d<new Date(new Date().setHours(0,0,0,0)) 
+    };
+  });
 }
+
+// end new code 
+
+// function wkGetWeek(offset) {
+// const now = new Date(), day = now.getDay(), diffToMon = day===0?-6:1-day;
+// const mon = new Date(now); mon.setDate(now.getDate() + diffToMon + offset*7); mon.setHours(0,0,0,0);
+// return Array.from({length:7},(_,i) => {
+// const d = new Date(mon); d.setDate(mon.getDate() + i);
+// const date = d.toISOString().split('T')[0];
+// return { date, label:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i], dayName:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][i], isToday:date===TODAY, isPast:d<new Date(new Date().setHours(0,0,0,0)) };
+// });
+// }
 function wkNav(dir)   { wkOffset += dir; renderWeekly(); }
 function wkGoToday()  { wkOffset = 0;    renderWeekly(); }
 
