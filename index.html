@@ -1261,6 +1261,11 @@ card.style.setProperty('--py', '0px');
 </section>
 
 <!-- TODO -->
+ <!-- new code for the bottom of calendar google  -->
+
+ <!-- <button id="syncCalendarBtn" class="btn-calendar">🔄 المزامنة مع Google Calendar</button> -->
+ 
+  <!-- end new code for the bottom of calendar google -->
 <section class="page" id="pg-todo">
 <div class="pgtitle">To-Do List</div>
 <div class="pgsub" id="todo-sub">0 active · 0 done</div>
@@ -1277,6 +1282,7 @@ card.style.setProperty('--py', '0px');
 <button class="fb" data-f="overdue">⚠ Overdue</button>
 </div>
 <div id="todo-list"></div>
+
 </section>
 
 <!-- WEEKLY TASKS -->
@@ -2651,9 +2657,9 @@ if(loadSess())bootApp();else showLanding();
 'use strict';
 
 /* ── API CONFIGURATION ── */
-  // const API_BASE = 'http://localhost:3001/api'; // ← change to your backend URL
+  const API_BASE = 'http://localhost:3001/api'; // ← change to your backend URL
   //const API_BASE = 'http://localhost:3001/api'; // ← change to your backend URL
-  const API_BASE = '/api';
+  // const API_BASE = '/api';
 const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 /* ── CONFIGURATION & CONSTANTS (UI only — no server data here) ── */
@@ -3984,6 +3990,59 @@ else showLanding();
  ══════════════════════════════════════════════════════════════════════════ */
 
 
+ // new code for calendar google
+
+
+//  let tokenClient;
+
+// // 1. كنانسطاليو الـ Client ديال جوجل ملي الصفحة كتحمل
+// function initGoogleAuth() {
+//   tokenClient = google.accounts.oauth2.initTokenClient({
+//     client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com', // ⚠️ حط الـ Client ID ديالك هنا
+//     scope: 'https://www.googleapis.com/auth/calendar.events', // 🎯 صلاحية التحكم فـ الأحداث ديال الكالوندر
+//     prompt: 'consent', // 🚨 ضرورية باش جوجل تعطيك الـ Refresh Token أول مرة
+//     callback: async (tokenResponse) => {
+//       if (tokenResponse.error) {
+//         console.error("🔴 Error:", tokenResponse.error);
+//         return;
+//       }
+
+//       // 2. كنعزلوا السوارت اللي جاو من جوجل
+//       const { access_token } = tokenResponse;
+
+//       // 3. كنصيفطو هاد الساروت للباكاند باش يخزنو لـ هاد اليوزر بالخصوص
+//       const response = await fetch('/api/save-calendar-token', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ 
+//           accessToken: access_token
+//           // الـ Refresh token كيجيبو الباكاند كود فـ الخلفية بـ الـ Code (أو غيوصلنا هنا على حسب الإعدادات)
+//         })
+//       });
+
+//       const data = await response.json();
+//       if (data.success) {
+//         alert("🎉 تم ربط Google Calendar بنجاح!");
+//       }
+//     },
+//   });
+// }
+
+// // 2. ملي اليوزر يكليكي على البطونة ك تفتح ليه الشاشة د جوجل
+// document.getElementById('syncCalendarBtn').onclick = () => {
+//   // تذكير: خاص السكريبت ديال جوجل يكون محمل فـ الـ header
+//   tokenClient.requestAccessToken({ hint: 'select_account' });
+// };
+
+// // خدم الـ init ملي تحمل الصفحة
+// window.onload = initGoogleAuth;
+
+ // end new code for calendar google 
+
+
+
+
+ 
  //  new code
 
 async function handleGoogleLogin(response) {

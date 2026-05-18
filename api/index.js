@@ -6,6 +6,40 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 
 
+//new code about resend email
+
+
+// الفوق كاع فـ ملف api/index.js، زيد هاد السطر
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// ... (الكود ديالك) ...
+
+// فـ البلاصة فين كتسجل اليوزر الجديد فـ Supabase، زيد هاد الفانكشن:
+async function notifyAdmin(newUseEmail, newUserName) {
+  try {
+    await resend.emails.send({
+      from: 'onboarding@resend.dev', // هادا إيميل فابور كتعطيه ليك Resend باش تجرب
+      to: 'brabrabrabra15@gmail.com', // حط الايميل ديالك هنا فين بغيتي توصلك الرسالة
+      subject: '🎉 New User In Focus!',
+      html: `
+        <h2>New Client 🚀</h2>
+        <p><strong>Username:</strong> ${newUserName}</p>
+        <p><strong>Email:</strong> ${newUseEmail}</p>
+        <p>Go To Supabase!</p>
+      `
+    });
+    console.log("✅ The Email Resend To The User Successfully");
+  } catch (error) {
+    console.error("🔴 Problem In Resend", error);
+  }
+}
+
+// مثال: ملي يتسجل اليوزر، عيط لـ الفانكشن بحال هكا
+// notifyAdmin(user.email, user.name);
+
+//end new code about resend email
+
 //news
 const { OAuth2Client } = require('google-auth-library');
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -97,7 +131,7 @@ app.post('/api/auth/google', async (req, res) => {
     
     const payload = ticket.getPayload();
     const email = payload.email.toLowerCase();
-    const name = payload.name;
+    const name = payload.name || email.split('@')[0];
     
     // 2. كنقلبو واش هاد الإيميل كاين عندنا فالداتابيز (Login)
     const { rows } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
@@ -113,6 +147,7 @@ app.post('/api/auth/google', async (req, res) => {
         [email, hash, name]
       );
       user = insertRes.rows[0];
+      notifyAdmin(user.email, user.full_name);
     }
     
     // 4. كنصاوبو التوكين ديالنا وندخلوه
